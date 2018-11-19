@@ -1,4 +1,4 @@
-# Go API client for swagger
+# Go API client for swagger [![travis-badge]][travis]
 
 Generated with [swagger-go](https://github.com/go-swagger/go-swagger).
 
@@ -53,3 +53,6 @@ func main() {
 * Change version in [Makefile](Makefile).
 * Run `make clean generate`
 * Commit changes
+
+ [travis]: https://travis-ci.org/gotify/go-api-client
+ [travis-badge]: https://travis-ci.org/gotify/go-api-client.svg?branch=master
