@@ -29,6 +29,7 @@ func main() {
 
 	if err != nil {
 		log.Fatal("Could not request version ", err)
+		return
 	}
 	version := versionResponse.Payload
 	log.Println("Found version", version.Version)
@@ -43,6 +44,7 @@ func main() {
 
 	if err != nil {
 		log.Fatal("Could not send message ", err)
+		return
 	}
 	log.Println("Message Sent!")
 }
