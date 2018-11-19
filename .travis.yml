@@ -1,0 +1,16 @@
+language: go
+go:
+  - "1.11"
+
+notifications:
+  email: false
+
+env:
+  - GO111MODULE=on
+
+install:
+  - go mod download
+  - go mod verify
+
+script:
+  - go install ./...
