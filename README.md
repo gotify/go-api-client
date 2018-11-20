@@ -1,4 +1,4 @@
-# Go API client for swagger [![travis-badge]][travis]
+# Gotify Golang API-Client [![travis-badge]][travis]
 
 Generated with [swagger-go](https://github.com/go-swagger/go-swagger).
 
