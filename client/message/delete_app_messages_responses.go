@@ -32,6 +32,13 @@ func (o *DeleteAppMessagesReader) ReadResponse(response runtime.ClientResponse, 
 		}
 		return result, nil
 
+	case 400:
+		result := NewDeleteAppMessagesBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewDeleteAppMessagesUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -41,6 +48,13 @@ func (o *DeleteAppMessagesReader) ReadResponse(response runtime.ClientResponse, 
 
 	case 403:
 		result := NewDeleteAppMessagesForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
+	case 404:
+		result := NewDeleteAppMessagesNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -68,6 +82,35 @@ func (o *DeleteAppMessagesOK) Error() string {
 }
 
 func (o *DeleteAppMessagesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewDeleteAppMessagesBadRequest creates a DeleteAppMessagesBadRequest with default headers values
+func NewDeleteAppMessagesBadRequest() *DeleteAppMessagesBadRequest {
+	return &DeleteAppMessagesBadRequest{}
+}
+
+/*DeleteAppMessagesBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type DeleteAppMessagesBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *DeleteAppMessagesBadRequest) Error() string {
+	return fmt.Sprintf("[DELETE /application/{id}/message][%d] deleteAppMessagesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *DeleteAppMessagesBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }
@@ -119,6 +162,35 @@ func (o *DeleteAppMessagesForbidden) Error() string {
 }
 
 func (o *DeleteAppMessagesForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteAppMessagesNotFound creates a DeleteAppMessagesNotFound with default headers values
+func NewDeleteAppMessagesNotFound() *DeleteAppMessagesNotFound {
+	return &DeleteAppMessagesNotFound{}
+}
+
+/*DeleteAppMessagesNotFound handles this case with default header values.
+
+Not Found
+*/
+type DeleteAppMessagesNotFound struct {
+	Payload *models.Error
+}
+
+func (o *DeleteAppMessagesNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /application/{id}/message][%d] deleteAppMessagesNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteAppMessagesNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Error)
 

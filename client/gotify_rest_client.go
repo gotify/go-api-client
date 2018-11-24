@@ -11,8 +11,9 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
+	"github.com/gotify/go-api-client/client/application"
+	"github.com/gotify/go-api-client/client/client"
 	"github.com/gotify/go-api-client/client/message"
-	"github.com/gotify/go-api-client/client/token"
 	"github.com/gotify/go-api-client/client/user"
 	"github.com/gotify/go-api-client/client/version"
 )
@@ -60,9 +61,11 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *GotifyREST
 	cli := new(GotifyREST)
 	cli.Transport = transport
 
-	cli.Message = message.New(transport, formats)
+	cli.Application = application.New(transport, formats)
 
-	cli.Token = token.New(transport, formats)
+	cli.Client = client.New(transport, formats)
+
+	cli.Message = message.New(transport, formats)
 
 	cli.User = user.New(transport, formats)
 
@@ -112,9 +115,11 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // GotifyREST is a client for gotify REST
 type GotifyREST struct {
-	Message *message.Client
+	Application *application.Client
 
-	Token *token.Client
+	Client *client.Client
+
+	Message *message.Client
 
 	User *user.Client
 
@@ -127,9 +132,11 @@ type GotifyREST struct {
 func (c *GotifyREST) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 
-	c.Message.SetTransport(transport)
+	c.Application.SetTransport(transport)
 
-	c.Token.SetTransport(transport)
+	c.Client.SetTransport(transport)
+
+	c.Message.SetTransport(transport)
 
 	c.User.SetTransport(transport)
 

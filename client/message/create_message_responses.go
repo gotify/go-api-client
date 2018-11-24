@@ -32,8 +32,22 @@ func (o *CreateMessageReader) ReadResponse(response runtime.ClientResponse, cons
 		}
 		return result, nil
 
+	case 400:
+		result := NewCreateMessageBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewCreateMessageUnauthorized()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
+	case 403:
+		result := NewCreateMessageForbidden()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -73,6 +87,35 @@ func (o *CreateMessageOK) readResponse(response runtime.ClientResponse, consumer
 	return nil
 }
 
+// NewCreateMessageBadRequest creates a CreateMessageBadRequest with default headers values
+func NewCreateMessageBadRequest() *CreateMessageBadRequest {
+	return &CreateMessageBadRequest{}
+}
+
+/*CreateMessageBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type CreateMessageBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *CreateMessageBadRequest) Error() string {
+	return fmt.Sprintf("[POST /message][%d] createMessageBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateMessageBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewCreateMessageUnauthorized creates a CreateMessageUnauthorized with default headers values
 func NewCreateMessageUnauthorized() *CreateMessageUnauthorized {
 	return &CreateMessageUnauthorized{}
@@ -91,6 +134,35 @@ func (o *CreateMessageUnauthorized) Error() string {
 }
 
 func (o *CreateMessageUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewCreateMessageForbidden creates a CreateMessageForbidden with default headers values
+func NewCreateMessageForbidden() *CreateMessageForbidden {
+	return &CreateMessageForbidden{}
+}
+
+/*CreateMessageForbidden handles this case with default header values.
+
+Forbidden
+*/
+type CreateMessageForbidden struct {
+	Payload *models.Error
+}
+
+func (o *CreateMessageForbidden) Error() string {
+	return fmt.Sprintf("[POST /message][%d] createMessageForbidden  %+v", 403, o.Payload)
+}
+
+func (o *CreateMessageForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Error)
 

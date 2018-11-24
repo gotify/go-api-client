@@ -32,6 +32,13 @@ func (o *CreateUserReader) ReadResponse(response runtime.ClientResponse, consume
 		}
 		return result, nil
 
+	case 400:
+		result := NewCreateUserBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewCreateUserUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,6 +78,35 @@ func (o *CreateUserOK) Error() string {
 func (o *CreateUserOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.UserExternal)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewCreateUserBadRequest creates a CreateUserBadRequest with default headers values
+func NewCreateUserBadRequest() *CreateUserBadRequest {
+	return &CreateUserBadRequest{}
+}
+
+/*CreateUserBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type CreateUserBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *CreateUserBadRequest) Error() string {
+	return fmt.Sprintf("[POST /user][%d] createUserBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *CreateUserBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -32,6 +32,13 @@ func (o *GetAppMessagesReader) ReadResponse(response runtime.ClientResponse, con
 		}
 		return result, nil
 
+	case 400:
+		result := NewGetAppMessagesBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewGetAppMessagesUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -41,6 +48,13 @@ func (o *GetAppMessagesReader) ReadResponse(response runtime.ClientResponse, con
 
 	case 403:
 		result := NewGetAppMessagesForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
+	case 404:
+		result := NewGetAppMessagesNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -71,6 +85,35 @@ func (o *GetAppMessagesOK) Error() string {
 func (o *GetAppMessagesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.PagedMessages)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetAppMessagesBadRequest creates a GetAppMessagesBadRequest with default headers values
+func NewGetAppMessagesBadRequest() *GetAppMessagesBadRequest {
+	return &GetAppMessagesBadRequest{}
+}
+
+/*GetAppMessagesBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type GetAppMessagesBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *GetAppMessagesBadRequest) Error() string {
+	return fmt.Sprintf("[GET /application/{id}/message][%d] getAppMessagesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetAppMessagesBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -127,6 +170,35 @@ func (o *GetAppMessagesForbidden) Error() string {
 }
 
 func (o *GetAppMessagesForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetAppMessagesNotFound creates a GetAppMessagesNotFound with default headers values
+func NewGetAppMessagesNotFound() *GetAppMessagesNotFound {
+	return &GetAppMessagesNotFound{}
+}
+
+/*GetAppMessagesNotFound handles this case with default header values.
+
+Not Found
+*/
+type GetAppMessagesNotFound struct {
+	Payload *models.Error
+}
+
+func (o *GetAppMessagesNotFound) Error() string {
+	return fmt.Sprintf("[GET /application/{id}/message][%d] getAppMessagesNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetAppMessagesNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Error)
 

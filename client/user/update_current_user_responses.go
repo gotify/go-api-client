@@ -32,6 +32,13 @@ func (o *UpdateCurrentUserReader) ReadResponse(response runtime.ClientResponse, 
 		}
 		return result, nil
 
+	case 400:
+		result := NewUpdateCurrentUserBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewUpdateCurrentUserUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -68,6 +75,35 @@ func (o *UpdateCurrentUserOK) Error() string {
 }
 
 func (o *UpdateCurrentUserOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewUpdateCurrentUserBadRequest creates a UpdateCurrentUserBadRequest with default headers values
+func NewUpdateCurrentUserBadRequest() *UpdateCurrentUserBadRequest {
+	return &UpdateCurrentUserBadRequest{}
+}
+
+/*UpdateCurrentUserBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type UpdateCurrentUserBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *UpdateCurrentUserBadRequest) Error() string {
+	return fmt.Sprintf("[POST /current/user/password][%d] updateCurrentUserBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *UpdateCurrentUserBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

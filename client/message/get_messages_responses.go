@@ -32,6 +32,13 @@ func (o *GetMessagesReader) ReadResponse(response runtime.ClientResponse, consum
 		}
 		return result, nil
 
+	case 400:
+		result := NewGetMessagesBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewGetMessagesUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -71,6 +78,35 @@ func (o *GetMessagesOK) Error() string {
 func (o *GetMessagesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.PagedMessages)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetMessagesBadRequest creates a GetMessagesBadRequest with default headers values
+func NewGetMessagesBadRequest() *GetMessagesBadRequest {
+	return &GetMessagesBadRequest{}
+}
+
+/*GetMessagesBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type GetMessagesBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *GetMessagesBadRequest) Error() string {
+	return fmt.Sprintf("[GET /message][%d] getMessagesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetMessagesBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

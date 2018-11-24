@@ -32,6 +32,13 @@ func (o *StreamMessagesReader) ReadResponse(response runtime.ClientResponse, con
 		}
 		return result, nil
 
+	case 400:
+		result := NewStreamMessagesBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewStreamMessagesUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -41,6 +48,13 @@ func (o *StreamMessagesReader) ReadResponse(response runtime.ClientResponse, con
 
 	case 403:
 		result := NewStreamMessagesForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
+	case 500:
+		result := NewStreamMessagesInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -71,6 +85,35 @@ func (o *StreamMessagesOK) Error() string {
 func (o *StreamMessagesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Message)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewStreamMessagesBadRequest creates a StreamMessagesBadRequest with default headers values
+func NewStreamMessagesBadRequest() *StreamMessagesBadRequest {
+	return &StreamMessagesBadRequest{}
+}
+
+/*StreamMessagesBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type StreamMessagesBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *StreamMessagesBadRequest) Error() string {
+	return fmt.Sprintf("[GET /stream][%d] streamMessagesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *StreamMessagesBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -127,6 +170,35 @@ func (o *StreamMessagesForbidden) Error() string {
 }
 
 func (o *StreamMessagesForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewStreamMessagesInternalServerError creates a StreamMessagesInternalServerError with default headers values
+func NewStreamMessagesInternalServerError() *StreamMessagesInternalServerError {
+	return &StreamMessagesInternalServerError{}
+}
+
+/*StreamMessagesInternalServerError handles this case with default header values.
+
+Server Error
+*/
+type StreamMessagesInternalServerError struct {
+	Payload *models.Error
+}
+
+func (o *StreamMessagesInternalServerError) Error() string {
+	return fmt.Sprintf("[GET /stream][%d] streamMessagesInternalServerError  %+v", 500, o.Payload)
+}
+
+func (o *StreamMessagesInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Error)
 

@@ -32,6 +32,13 @@ func (o *GetUserReader) ReadResponse(response runtime.ClientResponse, consumer r
 		}
 		return result, nil
 
+	case 400:
+		result := NewGetUserBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewGetUserUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -41,6 +48,13 @@ func (o *GetUserReader) ReadResponse(response runtime.ClientResponse, consumer r
 
 	case 403:
 		result := NewGetUserForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
+	case 404:
+		result := NewGetUserNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -71,6 +85,35 @@ func (o *GetUserOK) Error() string {
 func (o *GetUserOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.UserExternal)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetUserBadRequest creates a GetUserBadRequest with default headers values
+func NewGetUserBadRequest() *GetUserBadRequest {
+	return &GetUserBadRequest{}
+}
+
+/*GetUserBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type GetUserBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *GetUserBadRequest) Error() string {
+	return fmt.Sprintf("[GET /user/{id}][%d] getUserBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetUserBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -127,6 +170,35 @@ func (o *GetUserForbidden) Error() string {
 }
 
 func (o *GetUserForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetUserNotFound creates a GetUserNotFound with default headers values
+func NewGetUserNotFound() *GetUserNotFound {
+	return &GetUserNotFound{}
+}
+
+/*GetUserNotFound handles this case with default header values.
+
+Not Found
+*/
+type GetUserNotFound struct {
+	Payload *models.Error
+}
+
+func (o *GetUserNotFound) Error() string {
+	return fmt.Sprintf("[GET /user/{id}][%d] getUserNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetUserNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Error)
 

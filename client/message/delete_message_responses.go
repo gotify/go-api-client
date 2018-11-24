@@ -32,6 +32,13 @@ func (o *DeleteMessageReader) ReadResponse(response runtime.ClientResponse, cons
 		}
 		return result, nil
 
+	case 400:
+		result := NewDeleteMessageBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
 	case 401:
 		result := NewDeleteMessageUnauthorized()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -41,6 +48,13 @@ func (o *DeleteMessageReader) ReadResponse(response runtime.ClientResponse, cons
 
 	case 403:
 		result := NewDeleteMessageForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+
+	case 404:
+		result := NewDeleteMessageNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -68,6 +82,35 @@ func (o *DeleteMessageOK) Error() string {
 }
 
 func (o *DeleteMessageOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewDeleteMessageBadRequest creates a DeleteMessageBadRequest with default headers values
+func NewDeleteMessageBadRequest() *DeleteMessageBadRequest {
+	return &DeleteMessageBadRequest{}
+}
+
+/*DeleteMessageBadRequest handles this case with default header values.
+
+Bad Request
+*/
+type DeleteMessageBadRequest struct {
+	Payload *models.Error
+}
+
+func (o *DeleteMessageBadRequest) Error() string {
+	return fmt.Sprintf("[DELETE /message/{id}][%d] deleteMessageBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *DeleteMessageBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }
@@ -119,6 +162,35 @@ func (o *DeleteMessageForbidden) Error() string {
 }
 
 func (o *DeleteMessageForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Error)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteMessageNotFound creates a DeleteMessageNotFound with default headers values
+func NewDeleteMessageNotFound() *DeleteMessageNotFound {
+	return &DeleteMessageNotFound{}
+}
+
+/*DeleteMessageNotFound handles this case with default header values.
+
+Not Found
+*/
+type DeleteMessageNotFound struct {
+	Payload *models.Error
+}
+
+func (o *DeleteMessageNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /message/{id}][%d] deleteMessageNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteMessageNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Error)
 
