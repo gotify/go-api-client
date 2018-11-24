@@ -1,4 +1,4 @@
-GOTIFY_VERSION=1.1.8
+GOTIFY_VERSION=1.2.0
 PACKAGE=github.com/gotify/go-api-client
 BUILD=./build
 TEMP_SPEC=${BUILD}/gotify.json
