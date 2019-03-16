@@ -3,7 +3,7 @@ package gotify
 import (
 	"net/url"
 	"net/http"
-	api "github.com/gotify/go-api-client/client"
+	api "github.com/gotify/go-api-client/v2/client"
 	httptransport "github.com/go-openapi/runtime/client"
 )
 
