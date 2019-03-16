@@ -1,4 +1,4 @@
-module github.com/gotify/go-api-client
+module github.com/gotify/go-api-client/v2
 
 require (
 	github.com/go-openapi/errors v0.17.2
