@@ -1,5 +1,5 @@
-GOTIFY_VERSION=1.2.0
 PACKAGE=github.com/gotify/go-api-client
+GOTIFY_VERSION=2.0.4
 BUILD=./build
 TEMP_SPEC=${BUILD}/gotify.json
 SWAGGER=./.tools/swagger
