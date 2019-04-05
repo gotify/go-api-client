@@ -1,5 +1,4 @@
 GOTIFY_VERSION=2.0.4
-PACKAGE=github.com/gotify/go-api-client/v2
 BUILD=./build
 TEMP_SPEC=${BUILD}/gotify.json
 SWAGGER=./.tools/swagger
@@ -27,9 +26,6 @@ obtain-spec:
 
 generate: obtain-spec
 	${SWAGGER} generate client -f ${TEMP_SPEC} --additional-initialism=rest --skip-models
-
-test:
-	${SWAGGER} generate client --help
 
 clean:
 	rm -rf client build
