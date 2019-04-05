@@ -23,14 +23,14 @@ install:
 
 obtain-spec:
 	mkdir build || true
-	wget -O ${TEMP_SPEC} https://raw.githubusercontent.com/gotify/server/v${GOTIFY_VERSION}/docs/spec.json 
+	wget -O ${TEMP_SPEC} https://raw.githubusercontent.com/gotify/server/v${GOTIFY_VERSION}/docs/spec.json
 
 generate: obtain-spec
 	${SWAGGER} generate client -f ${TEMP_SPEC} --additional-initialism=rest --skip-models
-	find client/. -type f -exec sed -i 's/github.com\/gotify\/go-api-client\/models/github.com\/gotify\/server\/model/g' {} +
 
 test:
 	${SWAGGER} generate client --help
 
 clean:
 	rm -rf client build
+
