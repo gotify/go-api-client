@@ -6,10 +6,9 @@ package message
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/context"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -17,7 +16,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/gotify/server/model"
+	models "github.com/gotify/go-api-client/v2/models"
 )
 
 // NewCreateMessageParams creates a new CreateMessageParams object
@@ -68,7 +67,7 @@ type CreateMessageParams struct {
 	  the message to add
 
 	*/
-	Body *models.Message
+	Body *models.MessageExternal
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,13 +108,13 @@ func (o *CreateMessageParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the create message params
-func (o *CreateMessageParams) WithBody(body *models.Message) *CreateMessageParams {
+func (o *CreateMessageParams) WithBody(body *models.MessageExternal) *CreateMessageParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create message params
-func (o *CreateMessageParams) SetBody(body *models.Message) {
+func (o *CreateMessageParams) SetBody(body *models.MessageExternal) {
 	o.Body = body
 }
 

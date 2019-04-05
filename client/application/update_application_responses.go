@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/gotify/server/model"
+	models "github.com/gotify/go-api-client/v2/models"
 )
 
 // UpdateApplicationReader is a Reader for the UpdateApplication structure.

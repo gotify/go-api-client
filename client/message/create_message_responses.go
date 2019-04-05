@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/gotify/server/model"
+	models "github.com/gotify/go-api-client/v2/models"
 )
 
 // CreateMessageReader is a Reader for the CreateMessage structure.
@@ -68,7 +68,7 @@ func NewCreateMessageOK() *CreateMessageOK {
 Ok
 */
 type CreateMessageOK struct {
-	Payload *models.Message
+	Payload *models.MessageExternal
 }
 
 func (o *CreateMessageOK) Error() string {
@@ -77,7 +77,7 @@ func (o *CreateMessageOK) Error() string {
 
 func (o *CreateMessageOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.Message)
+	o.Payload = new(models.MessageExternal)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
