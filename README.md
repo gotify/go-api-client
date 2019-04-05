@@ -8,17 +8,18 @@ Generated with [swagger-go](https://github.com/go-swagger/go-swagger).
 package main
 
 import (
-	"github.com/gotify/go-api-client/gotify"
-	"net/url"
-	"net/http"
 	"log"
-	"github.com/gotify/go-api-client/client/message"
-	"github.com/gotify/server/model"
-	"github.com/gotify/go-api-client/auth"
+	"net/http"
+	"net/url"
+
+	"github.com/gotify/go-api-client/v2/auth"
+	"github.com/gotify/go-api-client/v2/client/message"
+	"github.com/gotify/go-api-client/v2/gotify"
+	"github.com/gotify/go-api-client/v2/models"
 )
 
 const (
-	gotifyURL ="https://push.gotify.url"
+	gotifyURL        = "https://push.gotify.url"
 	applicationToken = "AxNVvRfx9.ZKCTj"
 )
 
@@ -32,18 +33,18 @@ func main() {
 		return
 	}
 	version := versionResponse.Payload
-	log.Println("Found version", version.Version)
+	log.Println("Found version", *version)
 
 	params := message.NewCreateMessageParams()
-	params.Body = &model.Message{
-		Title: "my title",
-		Message: "my message",
+	params.Body = &models.MessageExternal{
+		Title:    "my title",
+		Message:  "my message",
 		Priority: 5,
 	}
 	_, err = client.Message.CreateMessage(params, auth.TokenAuth(applicationToken))
 
 	if err != nil {
-		log.Fatal("Could not send message ", err)
+		log.Fatalf("Could not send message %v", err)
 		return
 	}
 	log.Println("Message Sent!")
