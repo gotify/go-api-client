@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/gotify/server/model"
+	models "github.com/gotify/go-api-client/v2/models"
 )
 
 // StreamMessagesReader is a Reader for the StreamMessages structure.
@@ -75,7 +75,7 @@ func NewStreamMessagesOK() *StreamMessagesOK {
 Ok
 */
 type StreamMessagesOK struct {
-	Payload *models.Message
+	Payload *models.MessageExternal
 }
 
 func (o *StreamMessagesOK) Error() string {
@@ -84,7 +84,7 @@ func (o *StreamMessagesOK) Error() string {
 
 func (o *StreamMessagesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.Message)
+	o.Payload = new(models.MessageExternal)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
