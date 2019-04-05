@@ -15,7 +15,7 @@ clean-tools:
 
 get-tools: clean-tools
 	mkdir .tools || true
-	wget -O ${SWAGGER} https://github.com/go-swagger/go-swagger/releases/download/v0.17.2/${DOWNLOAD_SWAGGER}
+	wget -O ${SWAGGER} https://github.com/go-swagger/go-swagger/releases/download/v0.19.0/${DOWNLOAD_SWAGGER}
 	chmod u+x .tools/*
 
 install:
