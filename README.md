@@ -50,6 +50,12 @@ func main() {
 	log.Println("Message Sent!")
 }
 ```
+## Configuration option
+
+If needed, you can disable SSL handcheck validation using an environment variable:
+```
+export GOTIFY_SKIP_TLS=True
+```
 
 ## Update Instructions
 
